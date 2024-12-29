@@ -333,7 +333,9 @@ export class ActiveAuras {
       effectData.flags.dae?.specialDuration?.push(effectData.flags.ActiveAuras.time);
     }
 
-    await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    if (!token.actor.getEmbeddedCollection("ActiveEffect").some((x) => (x.img == effectData.img))) {
+        await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+    }
     Logger.debug(game.i18n.format("ACTIVEAURAS.ApplyLog", { effectDataName: effectData.name, tokenName: token.name, effectData }));
   }
 
